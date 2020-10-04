@@ -5,4 +5,4 @@ eventlet==0.25.1
 wolframalpha==4.0.0
 pyparsing==2.4.7
 regex==2020.7.14
-Diofant==0.11.0
+Diofant==0.11.0a5
