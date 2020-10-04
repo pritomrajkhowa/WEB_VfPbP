@@ -8142,8 +8142,8 @@ def query2z3(constraint_list,conclusion,vfact,inputmap,witnessXml):
         pythonProgram+="currentdirectory = os.path.dirname(os.path.realpath(__file__))\n"
         pythonProgram+="sys.path.append(currentdirectory+\"/packages/z3/python/\")\n"
         pythonProgram+="from z3 import *\n"
-        pythonProgram+="init(currentdirectory+\"/packages/z3\")\n"
-        pythonProgram+="set_param(proof=True)\n"
+        #pythonProgram+="init(currentdirectory+\"/packages/z3\")\n"
+        #pythonProgram+="set_param(proof=True)\n"
         pythonProgram+="\ntry:\n"
         pythonProgram+="\t_p1=Int('_p1')\n"
         pythonProgram+="\t_p2=Int('_p2')\n"
@@ -8152,7 +8152,7 @@ def query2z3(constraint_list,conclusion,vfact,inputmap,witnessXml):
         pythonProgram+="\tarraySort = DeclareSort('arraySort')\n"
         pythonProgram+="\t_f=Function('_f',IntSort(),IntSort())\n"
         pythonProgram+="\t_ToReal=Function('_ToReal',RealSort(),IntSort())\n"
-        #pythonProgram+="\t_ToInt=Function('_ToInt',IntSort(),RealSort())\n"
+        pythonProgram+="\t_ToInt=Function('_ToInt',IntSort(),RealSort())\n"
     
 
         duplicate_map={}
@@ -8234,9 +8234,9 @@ def query2z3(constraint_list,conclusion,vfact,inputmap,witnessXml):
         #finalProgram+="if sat==_s.check():\n"+"\tprint \"Counter Example\"\n"+"\tprint _s.model()\n"+"\twitnessXmlStr="+str(witnessXml)+"\n"+"\tmiddle=''\n"+"\tfor element in _s.model():\n"+"\t\tif str(element)==witnessXmlStr[2]:\n"+"\t\t\tmiddle+='<data key=\"assumption\">'+'\\\\'+'result=='+str(_s.model()[element])+'</data>'\n"+"\tfile = open(witnessXmlStr[3]+'_witness.graphml', 'w')\n"+"\tfile.write(witnessXmlStr[0]+middle+witnessXmlStr[1])\n"+"\tfile.close()\n"+"elif unsat==_s.check():\n"+"\t_s.check()\n"+"\ttry:\n"+"\t\tif os.path.isfile(\'j2llogs.logs\'):\n"+"\t\t\tfile = open(\'j2llogs.logs\', \'a\')\n"+"\t\t\tfile.write(\"\\n**************\\nProof Details\\n**************\\n\"+str(_s.proof().children())+\"\\n\")\n"+"\t\t\tfile.close()\n"+"\t\telse:\n"+"\t\t\tfile = open(\'j2llogs.logs\', \'w\')\n"+"\t\t\tfile.write(\"\\n**************\\nProof Details\\n**************\\n\"+str(_s.proof().children())+\"\\n\")\n"+"\t\t\tfile.close()\n"+"\texcept Exception as e:\n"+"\t\tfile = open(\'j2llogs.logs\', \'a\')\n"+"\t\tfile.write(\"\\n**************\\nProof Details\\n**************\\n\"+\"Error\"+\"\\n\")\n"+"\t\tfile.close()\n"+"\tprint \"Successfully Proved\"\n"+"else:\n"+"\tprint \"Failed To Prove\""
         #finalProgram+="if sat==_s.check():\n"+"\tprint \"Counter Example\"\n"+"\tprint _s.model()\n"+"\twitnessXmlStr="+str(witnessXml)+"\n"+"\tmiddle=''\n"+"\tfor element in _s.model():\n"+"\t\tif str(element)!=witnessXmlStr[2]:\n"+"\t\t\tmiddle+='<data key=\"assumption\">'+str(element)[:-1]+'=='+str(_s.model()[element])+'</data>'\n"+"\t\telse:\n"+"\t\t\tmiddle+='<data key=\"assumption\">'+'\\\\'+'result=='+str(_s.model()[element])+'</data>'\n"+"\tfile = open(witnessXmlStr[3]+'_witness.graphml', 'w')\n"+"\tfile.write(witnessXmlStr[0]+middle+witnessXmlStr[1])\n"+"\tfile.close()\n"+"elif unsat==_s.check():\n"+"\t_s.check()\n"+"\tif os.path.isfile(\'j2llogs.logs\'):\n"+"\t\tfile = open(\'j2llogs.logs\', \'a\')\n"+"\t\tfile.write(\"\\n**************\\nProof Details\\n**************\\n\"+str(_s.proof().children())+\"\\n\")\n"+"\t\tfile.close()\n"+"\telse:\n"+"\t\tfile = open(\'j2llogs.logs\', \'w\')\n"+"\t\tfile.write(\"\\n**************\\nProof Details\\n**************\\n\"+str(_s.proof().children())+\"\\n\")\n"+"\t\tfile.close()\n"+"\tprint \"Successfully Proved\"\n"+"else:\n"+"\tprint \"Failed To Prove\""
         #finalProgram+="if sat==_s.check():\n"+"\tprint \"Counter Example\"\n"+"\tprint _s.model()\n"+"elif unsat==_s.check():\n"+"\t_s.check()\n"+"\tprint \"Successfully Proved\"\n"+"else:\n"+"\tprint \"Failed To Prove\""
-        #print finalProgram
+        print(finalProgram)
         writtingFile( "z3query.py" , finalProgram )
-        writeLogFile( "j2llogs.logs" , "\nQuery to z3 \n"+str(finalProgram)+"\n" )
+        #writeLogFile( "j2llogs.logs" , "\nQuery to z3 \n"+str(finalProgram)+"\n" )
         try :
             proc = subprocess.Popen('python '+currentdirectory+'/z3query.py', stdout=subprocess.PIPE,shell=True)
             output = proc.stdout.read()
